@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+
+<head>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="http://d3js.org/topojson.v1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Open+Sans" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="thai_household_stat/main.css" />
+
+    <meta property="og:title" content = "Thailand's Household Income, Spending, and Debt Visualized - Ben Vibhagool" />
+    <meta property="og:site_name" content = "Ben Vibhagool" />
+    <meta property="og:url" content = "http://www.benvibhagool.com/thai_household_stat"  />
+    <meta property="og:description" content = "http://www.benvibhagool.com/posts/thailand-s-household-income-spending-and-debt-visualized" />
+    <meta property="og:image" content = "http://i.imgur.com/KxfDqoG.png" />
+    <meta property="og:type" content = "website" />
+    <meta property="og:locale" content = "en_US" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@benvib" />
+    <meta name="twitter:title" content="Thailand's Household Income, Spending, and Debt Visualized - Ben Vibhagool" />
+    <meta name="twitter:description" content="On a quest to build great things." />
+    <meta name="twitter:image" content="http://i.imgur.com/KxfDqoG.png" />
+    <meta name="twitter:url" content="http://www.benvibhagool.com/thai_household_stat" />
+
+</head>
+
+<body>
+    <div id="fb-root"></div>
+    <script>(function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.4&appId=1621716338072966";
+      fjs.parentNode.insertBefore(js, fjs);
+    }(document, 'script', 'facebook-jssdk'));</script>
+
+    <div class = "page-title" style = "display:none;">
+        <div class = "page-title-text"><span>Thai household income, spending and debt</span></div>
+    </div>
+    <div class="summary" style = "display:none;">
+        <div class="year">
+            <span class = "button-prev-year"><span class="btn btn-default"><i class="fa fa-arrow-left fa-4x"></i></span></span>
+            <span class="year-title">Year </span>
+
+              <div class="dropdown dropdown-year">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuCategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <li class = "selected" style = "list-style-type:none;">
+                        <span class="dropdown-category-title">2013</span>
+                    </li>
+                  <span class="caret"></span>
+                </button>
+            
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuCategory">
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-1996">1996</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-1998">1998</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2000">2000</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2002">2002</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2004">2004</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2006">2006</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2007">2007</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2008">2008</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2009">2009</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2010">2010</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2011">2011</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2012">2012</span>
+                        </a>
+                    </li>
+                    <li class="selector">
+                        <a>
+                            <span class="dropdown-category-title" id = "year-2013">2013</span>
+                        </a>
+                    </li>
+                </ul>
+              </div>
+               <span class = "button-next-year"><span class="btn btn-default"><i class="fa fa-arrow-right fa-4x"></i></span></span>
+        </div>
+        <div class="category">
+
+              <div class="dropdown dropdown-category">
+                <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenuYear" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                    <li class = "selected" style = "list-style-type:none;">
+                      <span class="dropdown-category-icon"><i class="fa fa-briefcase fa-1x"></i></span>
+                      <span class="dropdown-category-title">&nbsp;Income</span>
+                    </li>
+                  <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuYear">
+                  <li class = "selector">
+                    <a>
+                      <span class="dropdown-category-icon"><i class="fa fa-briefcase fa-1x"></i></span>
+                      <span class="dropdown-category-title">&nbsp;Income</span>
+                    </a>
+                  </li>
+                  <li class = "selector">
+                    <a>
+                      <span class="dropdown-category-icon"><i class="fa fa-shopping-cart fa-1x"></i></span>
+                      <span class="dropdown-category-title">&nbsp;Spending</span>
+                    </a>
+                  </li>
+                  <li class = "selector">
+                    <a>
+                    <span class="dropdown-category-icon"><i class="fa fa-university fa-1x"></i></span>
+                    <span class="dropdown-category-title">&nbsp;Debt</span>
+                    </a>
+                  </li>
+                <li class = "selector">
+                    <a>
+                    <span class="dropdown-category-icon"><i class="fa fa-area-chart fa-1x"></i></span>
+                    <span class="dropdown-category-title">&nbsp;I-S Ratio</span>
+                    </a>
+                  </li>
+                <li class = "selector">
+                    <a>
+                    <span class="dropdown-category-icon"><i class="fa fa-area-chart fa-1x"></i></span>
+                    <span class="dropdown-category-title">&nbsp;D-I Ratio</span>
+                    </a>
+                  </li>
+                <li class = "selector">
+                    <a>
+                    <span class="dropdown-category-icon"><i class="fa fa-area-chart fa-1x"></i></span>
+                    <span class="dropdown-category-title">&nbsp;S-D Ratio</span>
+                    </a>
+                  </li>
+
+                </ul>
+              </div>
+
+            <span class="category-title"> per Household</span>
+        </div>
+        <div class="region" id="Whole-Kingdom">
+            <span class="region-title">Whole Kingdom</span></br>
+            <span class="region-data">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+        <div class="region" id="Greater-Bangkok">
+            <span class="region-title">Greater Bangkok</span></br>
+            <span class="region-data">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+        <div class="region" id="Central-Region">
+            <span class="region-title">Central Region</span></br>
+            <span class="region-data">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+        <div class="region" id="Northeastern-Region">
+            <span class="region-title">Northeastern Region</span></br>
+            <span class="region-data">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+        <div class="region" id="Northern-Region">
+            <span class="region-title">Northern Region</span></br>
+            <span class="region-data">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+        <div class="region" id="Southern-Region">
+            <span class="region-title">Southern Region</span></br>
+            <span class="region-data">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+        </div>
+
+        <div class = "info">
+            <span class="info-icon" data-toggle="modal" data-target="#infoModal"><i class="fa fa-info-circle fa-2x"></i></span>
+            <p>Created by <a href = "http://www.benvibhagool.com" target="_blank">Ben Vibhagool</a></p>
+
+            <div class="fb-like" data-href="http://www.benvibhagool.com/thai_household_stat" data-layout="standard" data-action="like" data-show-faces="false" data-share="true" style = "margin-bottom:5px;"></div>
+            <a href="https://twitter.com/intent/tweet?text=Thailand's+Household+Income,+Spending,+and+Debt+Visualized&via=benvib" class="twitter-share-button">Tweet</a>
+        </div>
+    </div>
+
+    <div id="map" style = "display:none;">
+    </div>
+
+    <div class="ranking" style = "display:none;">
+        <table class="top-ranking-table" cellspacing='0' cellpadding='0' border='0' class='table-list'>
+            <tr>
+                <span class="ranking-type">Top 5 Provinces</span>
+                <td valign="top" style="padding-right:5px;">
+                    <ol class="top-ranking-title">
+                        <li id="top-name-1" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="top-name-2" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="top-name-3" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="top-name-4" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="top-name-5" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ol>
+                </td>
+                <td valign="top" style="padding-right:5px;">
+                    <ol class="top-ranking-value">
+                        <li id="top-value-1" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="top-value-2" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="top-value-3" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="top-value-4" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="top-value-5" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+        <table class="bottom-ranking-table" cellspacing='0' cellpadding='0' border='0' class='table-list'>
+            <tr>
+                <span class="ranking-type">Bottom 5 Provinces</span>
+                <td valign="top" style="padding-right:5px;">
+                    <ol class="bottom-ranking-titile">
+                        <li id="bottom-name-1" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="bottom-name-2" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="bottom-name-3" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="bottom-name-4" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="bottom-name-5" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ol>
+                </td>
+                <td valign="top" style="padding-right:5px;">
+                    <ol class="bottom-ranking-value">
+                        <li id="bottom-value-1" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="bottom-value-2" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="bottom-value-3" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="bottom-value-4" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                        <li id="bottom-value-5" class="rank-entry">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</li>
+                    </ol>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="modal fade" id = "infoModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h3 class="modal-title">About</h3>
+                </div>
+
+                <div class="modal-body">
+                    <h5>What is this?</h5>
+                    <p>Thailand's province-level average household monthly income, monthly spending, and total debt visualized via a heat map. Data is from year 1996 to 2013 with some years missing in between for some of the data.</p>
+
+                    <h5>Data</h5>
+                    <p>Household 
+                    <a href="http://data.go.th/DatasetDetail.aspx?id=4d58284c-4fa3-4b08-b249-b1b6b698cde5" target="_blank">monthly spending</a>, 
+                    <a href = "http://data.go.th/DatasetDetail.aspx?id=7049410f-5bb8-4c75-9e94-112ca18b63e2" target="_blank">monthly income</a> and 
+                    <a href ="http://data.go.th/DatasetDetail.aspx?id=6b3ca0fc-e9ed-4706-b936-01ac1db108fe" target="_blank">net debt</a> datasets were obtained from <a href = "http://data.go.th" target="_blank">data.go.th</a> The ratios were not included in the dataset.</p>
+
+                    <h5>Ratios</h5>
+                    <p>The ratios were manually calculated based on the available given data.
+                        <ul>
+                          <li><span style = "font-weight: 500">Income-Spending Ratio (I-S Ratio)</span><br>
+                                r = (MonthlyIncome) / (MonthlySpending)
+                          </li>
+                          <li><span style = "font-weight: 500">Debt-Income Ratio (D-I Ratio)</span><br>
+                                r = (TotalDebt/12) / (MonthlyIncome)
+                          </li>
+                          <li><span style = "font-weight: 500">Spending-Debt Ratio (S-D Ratio)</span><br>
+                                r = (MonthlySpending) / (TotalDebt/12)
+                          </li>
+
+                        </ul>
+                    </p>
+
+                    <p>Visit <a href = "http://www.benvibhagool.com/posts/thailand-s-household-income-spending-and-debt-visualized" target="_blank">here</a> to read a detailed walkthrough of this project. Please leave a comment if you see any errors or have any feedback!</p>
+
+                    <p>Created by <a href = "http://www.benvibhagool.com" target="_blank">Ben Vibhagool</a>.</p>
+                </div>
+
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+
+
+</body>
+
+<script>
+// toolTip.js
+d3.helper = {};
+d3.helper.tooltip = function(accessor){
+    return function(selection){
+        var tooltipDiv;
+        var bodyNode = d3.select('body').node();
+        selection.on("mouseover", function(d, i){
+            // Clean up lost tooltips
+            d3.select('body').selectAll('div.tooltip').remove();
+            // Append tooltip
+            tooltipDiv = d3.select('body').append('div').attr('class', 'tooltipcustom');
+            var absoluteMousePos = d3.mouse(bodyNode);
+            tooltipDiv.style('left', (absoluteMousePos[0] + 25)+'px')
+                .style('top', (absoluteMousePos[1] + 0)+'px')
+                .style('position', 'absolute') 
+                .style('z-index', 1001)
+            // Add text using the accessor function
+            var tooltipText = accessor(d, i) || '';
+            // Crop text arbitrarily
+            tooltipDiv.style('width', function(d, i){return (tooltipText.length > 80) ? '300px' : null;})
+                .html(tooltipText);
+        })
+        .on('mousemove', function(d, i) {
+            // Move tooltip
+            var absoluteMousePos = d3.mouse(bodyNode);
+            tooltipDiv.style('left', (absoluteMousePos[0] + 25)+'px')
+                .style('top', (absoluteMousePos[1] + 0)+'px');
+            var tooltipText = accessor(d, i) || '';
+            tooltipDiv.html(tooltipText);
+        })
+        .on("mouseout", function(d, i){
+            // Remove tooltip
+            tooltipDiv.remove();
+        });
+
+    };
+};
+
+//toolTipTemplate.js
+var toolTipTemplate = '<style>.tooltipcustom{ border-left: thick solid <%= color_value %>; }</style>\
+<div class = "tooltipcustom"> \
+    <div class = "tooltip-title"><span><b>&nbsp;&nbsp;<%= province_name %></b></span></br></div> \
+    <div class = "tooltip-item"> \
+        <div class = "tooltip-item-icon"><i class="fa fa-briefcase fa-2x"></i></div> \
+        <div class = "tooltip-item-info"><b>Income</b></br><span class = "tooltip-item-value"><%= income_value %></span></br></div> \
+        <div class = "tooltip-item-rank"> <%=income_rank%> </div> \
+    </div> \
+    <div class = "tooltip-item"> \
+        <div class = "tooltip-item-icon"><i class="fa fa-shopping-cart fa-2x"></i></div> \
+        <div class = "tooltip-item-info"><b>Spending</b></br><span class = "tooltip-item-value"><%= spending_value %></span></br></div> \
+        <div class = "tooltip-item-rank"> <%=spending_rank%> </div> \
+    </div> \
+    <div class = "tooltip-item"> \
+        <div class = "tooltip-item-icon"><i class="fa fa-university fa-2x"></i></div> \
+        <div class = "tooltip-item-info"><b>Debt</b></br><span class = "tooltip-item-value"><%= debt_value %></span></br></div> \
+        <div class = "tooltip-item-rank"> <%=debt_rank %> </div> \
+    </div> \
+    <div class = "tooltip-item">\
+        <div class = "tooltip-item-info-ratio"><b>I-S </b><span class = "tooltip-item-rank-ratio"><%= IS_rank %></span><span class = "tooltip-item-value"><%= IS_value %></span></div>\
+        <div class = "tooltip-item-info-ratio"><b>D-I </b><span class = "tooltip-item-rank-ratio"><%= DI_rank %></span><span class = "tooltip-item-value"><%= DI_value %></span></div>\
+        <div class = "tooltip-item-info-ratio"><b>S-D </b><span class = "tooltip-item-rank-ratio"><%= SD_rank %></span><span class = "tooltip-item-value"><%= SD_value %></span></div>\
+    </div>\
+</div>';
+
+//Width and height for svg container
+var width = 400,
+    height = 700;
+
+//Add svg cotainer to HTML body
+var svg = d3.select("#map").append("svg")
+    .attr("width", width)
+    .attr("height", height);
+
+//Load Province json
+d3.json("thai_household_stat/province_topo.json", function(error, data) {
+    if (error) return console.error(error);
+
+    //Adjust the view of the projection
+    var projection = d3.geo.albers()
+        .rotate([-100.28, 0])
+        .center([0, 13.45])
+        .scale(2500)
+        .translate([150, 300]);
+
+    //Create a path based on the projection
+    var path = d3.geo.path()
+        .projection(projection);
+
+    //Draw map
+    var map_paths = svg.selectAll("path")
+        .data(topojson.feature(data, data.objects.province).features) //Bind each province to empty path selection
+        .enter()
+        .append("path") //Create path element
+        .attr("d", path) //Draw out the paths
+        .attr("province", function(d) {
+            return cleanCSSName(d.properties.NAME_1);
+        }); //Give element class name as the province name
+
+    //Function to return tooltip div based on binded map data, data type, and the value
+    function tooltipText(d, data, rankData, colorValue) {
+
+        var displayRank = function(rank, show) {
+
+            if (show){
+                if (rank == "1") {
+                    return "1st";
+                } else if (rank == "2") {
+                    return "2nd";
+                } else if (rank == "3") {
+                    return "3rd";
+                } else {
+                    return rank + "th";
+                }
+            }
+            else{
+                return "-";
+            }
+        };
+
+        var province = d.properties.NAME_1;
+
+        var income = displayNumData(data["Income"]).replace(" Available","");
+        var incomeRank = displayRank(rankData["Income_rank"], (income !== "No data"));
+
+        var spending = displayNumData(data["Spending"]).replace(" Available","");
+        var spendingRank = displayRank(rankData["Spending_rank"], (spending !== "No data"));
+
+        var debt = displayNumData(data["Debt"]).replace(" Available","");
+        var debtRank = displayRank(rankData["Debt_rank"], (debt !== "No data"));
+
+        var IS = displayRatioData(data["I-S Ratio"]).replace(" Available","");
+        var ISRank = displayRank(rankData["I-S Ratio_rank"], (IS !== "No data"));
+
+        var DI = displayRatioData(data["D-I Ratio"]).replace(" Available","");
+        var DIRank = displayRank(rankData["D-I Ratio_rank"], (DI !== "No data"));
+
+        var SD = displayRatioData(data["S-D Ratio"]).replace(" Available","");
+        var SDRank = displayRank(rankData["S-D Ratio_rank"], (SD !== "No data"));
+
+        var complied = _.template(toolTipTemplate);
+        return complied({
+            province_name: province,
+            income_value: income,
+            spending_value: spending,
+            debt_value: debt,
+            income_rank: incomeRank,
+            spending_rank: spendingRank,
+            debt_rank: debtRank,
+            IS_value: IS,
+            DI_value:DI,
+            SD_value:SD,
+            IS_rank: ISRank,
+            DI_rank:DIRank,
+            SD_rank:SDRank,
+            color_value: colorValue
+        });
+    }
+
+    d3.json("thai_household_stat/data.json", function(error, data) {
+
+        function updateData(year, dataType){
+            var tsData = getData(data, year);
+            var provincesData = getDataByType(tsData['provinces'], dataType);
+            var rankData = getRankData(tsData['provinces']);
+            var regionsData = getDataByType(tsData['regions'], dataType);
+
+            updateColor(getDataByType(tsData['provinces'], dataType),dataType);
+            map_paths.each(function(d, i) {
+                var name = d.properties["NAME_1"];
+                var tsDataSub = tsData['provinces'][name]
+                var rankDataSub = rankData[name];
+
+                d3.select(this).call(d3.helper.tooltip(function(d, i) {
+                    var curColor = d3.select("path[province=" + cleanCSSName(name) + "]").style("fill");
+                    return tooltipText(d, tsDataSub, rankDataSub, curColor);
+                }));
+            });
+
+            updateRank(provincesData,dataType);
+            updateRegionData(regionsData, dataType);
+        }
+
+        var year = $(".dropdown-year .selected").children("span")[0].textContent.trim();
+        var dataType = $(".dropdown-category li").children("span")[1].textContent.trim();
+        updateData(year, dataType);
+
+        $(".page-title").show();
+        $(".summary").show();
+        $("#map").show();
+        $(".ranking").show();
+
+        $(".dropdown-category .dropdown-menu li a").click(function(){
+          var html = $(this).parents(".selector").find('a').html();
+          $(this).parents(".dropdown").find('.selected').html(html);
+
+          var year = $(".dropdown-year .selected").children("span")[0].textContent.trim();
+          var dataType = $(".dropdown-category li").children("span")[1].textContent.trim();
+          updateData(year, dataType);
+        });
+
+        $(".dropdown-year .dropdown-menu li a").click(function(){
+          var html = "<span class='dropdown-category-title'>" + $(this).parents(".selector").find('span').html() + "</span>";
+          $(this).parents(".dropdown").find('.selected').html(html);
+
+          var year = $(".dropdown-year li").children("span")[0].textContent.trim();
+          var dataType = $(".dropdown-category li").children("span")[1].textContent.trim();
+          updateData(year, dataType);
+        });
+
+        $(".button-next-year").click(function(){
+          //Get selected data
+          var curYear = $(".dropdown-year li").children("span")[0].textContent.trim();
+          var dataType = $(".dropdown-category li").children("span")[1].textContent.trim();
+
+          var nextYear = getNextYear(curYear);
+
+          var html = "<span class='dropdown-category-title'>" + nextYear + "</span>";
+          $(".dropdown-year").find('.selected').html(html);
+
+          updateData(nextYear, dataType);
+        });
+
+        $(".button-prev-year").click(function(){
+          //Get selected data
+          var curYear = $(".dropdown-year li").children("span")[0].textContent.trim();
+          var dataType = $(".dropdown-category li").children("span")[1].textContent.trim();
+
+          var prevYear = getPrevYear(curYear);
+
+          var html = "<span class='dropdown-category-title'>" + prevYear + "</span>";
+          $(".dropdown-year").find('.selected').html(html);
+
+          updateData(prevYear, dataType);
+        });
+
+
+    });
+
+});
+
+
+//Clean up text to be CSS class name friendly
+function cleanCSSName(name) {
+    return name.replace(/[!\"#$%&'\(\)\*\+,\.\/:;<=>\?\@\[\\\]\^`\{\|\}~]/g, '').split(" ").join("-");
+}
+
+//
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+//get the data of for that year
+function getData(data, year) {
+    //Declared empty selected data of that year
+    var selectedData = {
+        'provinces': {},
+        'regions': {}
+    };
+
+    //For provinces
+    for (var province in data['provinces']) {
+        for (var dataType in data['provinces'][province]) {
+            var tsObj = _.findWhere(data['provinces'][province][dataType], {
+                "Year": year
+            });
+            selectedData['provinces'][province] = selectedData['provinces'][province] ? selectedData['provinces'][province] : {}
+            selectedData['provinces'][province][dataType] = tsObj ? tsObj['Value'] : -1;
+        }
+    }
+
+    //For regions
+    for (var region in data['regions']) {
+        for (var dataType in data['regions'][region]) {
+            var tsObj = _.findWhere(data['regions'][region][dataType], {
+                "Year": year
+            });
+            selectedData['regions'][region] = selectedData['regions'][region] ? selectedData['regions'][region] : {}
+            selectedData['regions'][region][dataType] = tsObj ? tsObj['Value'] : -1;
+        }
+    }
+    return selectedData;
+}
+
+function getDataByType(data, dataType) {
+    var selectedData = {};
+    for (var province in data) {
+        selectedData[province] = data[province][dataType];
+    }
+    return selectedData;
+}
+
+
+//Update the color of each area based on data
+function updateColor(data,dataType) {
+    //Function to return color based on a heat scale
+    var colors = ["rgb(247, 251, 255)", "rgb(198, 219, 239)", "rgb(107, 174, 214)", "rgb(33, 113, 181)", "rgb(8, 48, 107)"];
+    var dataValue;
+    var colorScale = getColorScale(data,colors);
+    for (var provinceName in data) {
+        dataValue = data[provinceName];
+        //Change fill of each area
+        d3.select("path[province=" + cleanCSSName(provinceName) + "]")
+            .style("fill", function(d) {
+                return colorScale(dataValue);
+            }); //Update quantile class to heat color
+    }
+
+    //Update legend
+    svg.selectAll(".legend").remove();
+    var legend = svg.selectAll(".legend")
+    .data(colorScale.domain(), function(d) { return d; })
+    .enter().append("g")
+    .attr("class", "legend");
+    
+    var gridSize = 40;
+    var legendElementWidth = 80;
+    var height = 630;
+
+    legend.append("rect")
+    .attr("x", function(d, i) { return legendElementWidth * i; })
+    .attr("y", height)
+    .attr("width", legendElementWidth)
+    .attr("height", gridSize / 2)
+    .style("fill", function(d, i) { return colors[i]; });
+
+    if (dataType.indexOf("Ratio") > -1){
+        legend.append("text")
+        .attr("class", "mono")
+        .text(function(d) { return "≥ " + displayRatioData(d);})
+        .attr("x", function(d, i) { return legendElementWidth * i; })
+        .attr("y", height + gridSize);
+    }
+    else{
+        legend.append("text")
+        .attr("class", "mono")
+        .text(function(d) { return "≥ " + numberWithCommas(Math.round(d)); })
+        .attr("x", function(d, i) { return legendElementWidth * i; })
+        .attr("y", height + gridSize);
+    }
+}
+
+//Get appropriate heat scale colors
+function getColorScale(data,colors) {
+    var dataValues = [];
+    for (var provinceName in data) {
+        dataValues.push(parseFloat(data[provinceName]));
+    }
+
+    dataValues.sort(function(a,b){return parseFloat(a) - parseFloat(b);});
+    var q0 = d3.quantile(dataValues,0);
+    var q1 = d3.quantile(dataValues,0.2);
+    var q2 = d3.quantile(dataValues,0.4);
+    var q3 = d3.quantile(dataValues,0.6);
+    var q4 = d3.quantile(dataValues,0.8);
+
+    var colorScale = d3.scale.threshold()
+        .domain([q0,q1,q2,q3,q4])
+        .range([0].concat(colors));
+
+    return colorScale;
+}
+
+//Update the top and bottom 5 ranking
+function updateRank(data, dataType) {
+    //Get provinces
+    var provinces = Object.keys(data);
+
+    //Sort based on data value
+    provinces.sort(function(a, b) {
+        return parseFloat(data[b]) - parseFloat(data[a]);
+    });
+    
+    //Update the top ranking
+    if (dataType.indexOf("Ratio") > -1){
+        for (var i = 1; i <= 5; i++) {
+            var top_province = provinces[i - 1];
+            var top_num = data[top_province];
+
+            var bottom_province = provinces[provinces.length - i];
+            var bottom_num = data[bottom_province];
+
+            d3.select("#top-name-" + i).text(top_province);
+            d3.select("#top-value-" + i).text(displayRatioData(top_num));
+
+            d3.select("#bottom-name-" + i).text(bottom_province);
+            d3.select("#bottom-value-" + i).text(displayRatioData(bottom_num));
+        }
+    }
+    else{
+        for (var i = 1; i <= 5; i++) {
+            var top_province = provinces[i - 1];
+            var top_num = data[top_province];
+
+            var bottom_province = provinces[provinces.length - i];
+            var bottom_num = data[bottom_province];
+
+            d3.select("#top-name-" + i).text(top_province);
+            d3.select("#top-value-" + i).text(displayNumData(top_num));
+
+            d3.select("#bottom-name-" + i).text(bottom_province);
+            d3.select("#bottom-value-" + i).text(displayNumData(bottom_num));
+        }
+    }
+}
+
+function getRankData(data) {
+    //Get provinces
+    var provinces = Object.keys(data);
+
+    var rankData = {};
+
+    var dataTypes = ['Income', 'Spending', 'Debt', 'I-S Ratio', 'D-I Ratio', 'S-D Ratio'];
+
+    for (var i in dataTypes) {
+        provinces.sort(function(a, b) {
+            return parseFloat(data[b][dataTypes[i]]) - parseFloat(data[a][dataTypes[i]]);
+        });
+
+        _.each(provinces, function(x) {
+            //Create new object for each province
+            rankData[x] = rankData[x] ? rankData[x] : {};
+
+            rankData[x][dataTypes[i] + "_rank"] = _.indexOf(provinces, x) + 1;
+        });
+    }
+
+    return rankData;
+}
+
+//Update the top and bottom 5 ranking
+function updateRegionData(data, dataType) {
+    //Get provinces
+    d3.select(".catergory-title").text("Average " + dataType + " per Household");
+    if (dataType.indexOf("Ratio") > - 1){
+        for (var region in data) {
+            d3.select("#" + cleanCSSName(region)).selectAll(".region-data").text(displayRatioData(data[region]));
+        }
+    }
+    else{
+        for (var region in data) {
+            d3.select("#" + cleanCSSName(region)).selectAll(".region-data").text(displayNumData(data[region]));
+        }
+    }
+}
+
+function formatNumStr(num) {
+    return numberWithCommas(Math.round(num));
+}
+
+function formatRatioStr(ratio) {
+    return numberWithCommas(parseFloat(ratio).toFixed(2));
+}
+
+function displayNumData(num) {
+    return (num == "-1") ? "No data Available" : formatNumStr(num) + " Baht";
+}
+
+function displayRatioData(ratio){
+    return (ratio == "-1") ? "No data Available" : formatRatioStr(ratio);
+}
+
+function getNextYear(year){
+    yearList = ["1996","1998","2000","2002","2004","2006","2007","2008","2009","2010","2011","2012","2013"];
+
+   return yearList[Math.min(yearList.indexOf(year)+1, yearList.length-1)];
+}
+
+function getPrevYear(year){
+    yearList = ["1996","1998","2000","2002","2004","2006","2007","2008","2009","2010","2011","2012","2013"];
+
+   return yearList[Math.max(yearList.indexOf(year)-1, 0)];
+}
+
+    window.twttr = (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0],
+        t = window.twttr || {};
+      if (d.getElementById(id)) return t;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "https://platform.twitter.com/widgets.js";
+      fjs.parentNode.insertBefore(js, fjs);
+     
+      t._e = [];
+      t.ready = function(f) {
+        t._e.push(f);
+      };
+     
+      return t;
+    }(document, "script", "twitter-wjs"));
+</script>

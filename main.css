@@ -1,0 +1,222 @@
+.page-title-text {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 28px;
+    font-weight: bold;
+    width: 50%;
+    margin: 0 auto;
+    color: rgb(84,84,84);
+    padding: 10px;
+    text-align:center;
+}
+
+/* dropdown.css */
+.dropdown{
+    display: inline-block;
+}
+
+.dropdown-menu{
+  padding: 5px;
+  min-width: 0px;
+}
+
+.dropdown-menu:hover{
+  color: black;
+}
+
+.dropdown-category-title {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: rgb(84,84,84);
+}
+
+.dropdown-category-icon {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    letter-spacing: 1px;
+}
+
+.dropdown-year-icon {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+}
+
+/* map.css */
+#map{
+    vertical-align: top;
+    display: inline-block;
+}
+
+path {
+    fill: rgb(171, 221, 164);
+    stroke: grey;
+    stroke-width: 0.5px;
+}
+
+path:hover {
+    stroke:black;
+    stroke-width: 1px;
+}
+
+.center {
+    display: inline-block;
+}
+
+/* ranking.css */
+.ranking {
+    color: rgb(84, 84, 84);
+    display: inline-block;
+    padding: 10px;
+    padding-top: 50px;
+    vertical-align:top;
+}
+
+.ranking-type {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.rank-entry {
+    color: rgb(84, 84, 84);
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.top-ranking-value{
+     list-style-type: none;
+}
+
+.bottom-ranking-value{
+     list-style-type: none;
+}
+
+/* summary.css */
+.summary {
+    color: rgb(84,84,84);
+    display: inline-block;
+    padding: 10px;
+    width:490px;
+}
+
+.year{
+    margin: 0 0 10px 10px;
+}
+
+.year-title{
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.year-data{
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 40px;
+    font-weight: bold;
+    border-bottom: 1px dotted grey;
+}
+
+.category{
+    margin: 0 0 10px 10px;
+}
+
+.category-title {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+}
+
+.category-icon {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 25px;
+    letter-spacing: 1px;
+}
+
+.region {
+    margin: 0 0 10px 10px;
+}
+
+.region-title {
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 20px;
+    font-weight: normal;
+}
+
+.region-data {
+    color: grey;
+    font-family: 'Helvetica Neue', sans-serif;
+    font-size: 20px;
+    font-weight: normal;
+    border-bottom: 1px dotted grey;
+}
+
+.info {
+    margin: 0 0 10px 10px;
+}
+
+.info-icon:hover{
+    color:black;
+}
+
+/* toolTip.css */
+.tooltipcustom {
+    background: rgba(255,255,255, 0.9);
+    color: #333;
+    font-size: 15px;
+    position: absolute;
+    width: 230px;
+    z-index: 10;
+    font-family: 'Open Sans';
+    padding-left: 0px;
+}
+
+.tooltip-title{
+    font-size: 17px;
+    border-bottom: thin solid black;
+}
+
+.tooltip-item{
+    padding: 3px 15px;
+    border: 1px solid #dddddd;
+    border-left: 0px;
+    margin-bottom: -1px;
+}
+
+.tooltip-item-icon{
+    position: relative;
+    margin-right:5px;
+    display:inline-block;
+    top:  -5px;
+    width: 35px;
+    height:30px;
+}
+
+.tooltip-item-info{
+    display:inline-block;
+    width:100px;
+}
+
+.tooltip-item-value{
+    color: grey;
+    display:inline-block;
+}
+
+.tooltip-item-info-ratio{
+    display:inline-block;
+    width:60px;
+}
+
+.tooltip-item-rank{
+        position: relative;
+        display:inline-block;
+        font-size: 20px;
+        color:grey;
+        top:  -5px;
+}
+.tooltip-item-rank-ratio{
+    color: grey;
+    display:inline-block;
+    width:30px;
+}
