@@ -12,12 +12,12 @@
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
     <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
 
-    <link rel="stylesheet" href="thai_household_stat/main.css" />
+    <link rel="stylesheet" href="main.css" />
 
     <meta property="og:title" content = "Thailand's Household Income, Spending, and Debt Visualized - Ben Vibhagool" />
     <meta property="og:site_name" content = "Ben Vibhagool" />
-    <meta property="og:url" content = "http://www.benvibhagool.com/thai_household_stat"  />
-    <meta property="og:description" content = "http://www.benvibhagool.com/posts/thailand-s-household-income-spending-and-debt-visualized" />
+    <meta property="og:url" content = "http://cvibhagool.github.io/thai-household-stats/"  />
+    <meta property="og:description" content = "http://benv.io/posts/thailand-s-household-income-spending-and-debt-visualized" />
     <meta property="og:image" content = "http://i.imgur.com/KxfDqoG.png" />
     <meta property="og:type" content = "website" />
     <meta property="og:locale" content = "en_US" />
@@ -27,7 +27,7 @@
     <meta name="twitter:title" content="Thailand's Household Income, Spending, and Debt Visualized - Ben Vibhagool" />
     <meta name="twitter:description" content="On a quest to build great things." />
     <meta name="twitter:image" content="http://i.imgur.com/KxfDqoG.png" />
-    <meta name="twitter:url" content="http://www.benvibhagool.com/thai_household_stat" />
+    <meta name="twitter:url" content="http://cvibhagool.github.io/thai-household-stats/" />
 
 </head>
 
@@ -392,7 +392,7 @@ var svg = d3.select("#map").append("svg")
     .attr("height", height);
 
 //Load Province json
-d3.json("thai_household_stat/province_topo.json", function(error, data) {
+d3.json("province_topo.json", function(error, data) {
     if (error) return console.error(error);
 
     //Adjust the view of the projection
@@ -476,7 +476,7 @@ d3.json("thai_household_stat/province_topo.json", function(error, data) {
         });
     }
 
-    d3.json("thai_household_stat/data.json", function(error, data) {
+    d3.json("data.json", function(error, data) {
 
         function updateData(year, dataType){
             var tsData = getData(data, year);
